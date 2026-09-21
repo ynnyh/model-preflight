@@ -19,6 +19,23 @@ GLOBAL_CONFIG = Path.home() / ".config" / "model-router" / "config.json"
 TIER_ORDER = ["no_llm", "fast_small", "balanced", "reasoning"]
 
 
+def get_api_key():
+    """环境变量优先；Windows 上兜底读用户级注册表（免受进程环境未刷新影响）。"""
+    key = os.environ.get("TYPESAFE_API_KEY")
+    if key:
+        return key
+    if sys.platform == "win32":
+        try:
+            import winreg
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment") as k:
+                val, _ = winreg.QueryValueEx(k, "TYPESAFE_API_KEY")
+                if val:
+                    return val
+        except OSError:
+            pass
+    return None
+
+
 def load_config(project_dir):
     cfg = json.loads(GLOBAL_CONFIG.read_text(encoding="utf-8"))
     pc = Path(project_dir) / ".typesafe-router.json"
@@ -116,9 +133,11 @@ def main():
         print(json.dumps({"env": a.env, "state": state, "routing": routing}, ensure_ascii=False, indent=2))
         return 0
 
-    if not os.environ.get("TYPESAFE_API_KEY"):
+    api_key = get_api_key()
+    if not api_key:
         print(json.dumps({"error": "TYPESAFE_API_KEY 未设置，请配置环境变量（见 SKILL.md 密钥一节）"}, ensure_ascii=False))
         return 3
+    os.environ["TYPESAFE_API_KEY"] = api_key  # 注册表兜底时同步给 SDK 进程环境
     try:
         from typesafe_sdk import TypeSafeClient
     except ImportError:
