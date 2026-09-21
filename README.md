@@ -63,6 +63,18 @@ python <skills目录>/model-router/scripts/setup.py --env zcode --interactive
 - `call.py`：子任务按判断结果换模型执行（额外需要执行方的 API key）
 - `review.py`：多维复盘（完成度/风险等打分）
 
+## 起手式（可选）：/preflight
+
+把 `commands/` 下对应你 agent 的文件拷贝到位，即可用 `/preflight <任务描述>` 直接触发航前检查：
+
+| Agent | 拷贝源 | 拷贝到 |
+| --- | --- | --- |
+| ZCode | `commands/zcode-preflight.md` | `~/.zcode/commands/preflight.md` |
+| Claude Code | `commands/claude-preflight.md` | `~/.claude/commands/preflight.md` |
+| Codex | `commands/codex-preflight.md` | `~/.codex/prompts/preflight.md` |
+
+效果：补齐任务描述 → 一次判断（模型/思考强度/是否需测试）→ 停等你切换模型 → 回复"开始"后开工。新会话生效。
+
 ## License
 
 MIT
