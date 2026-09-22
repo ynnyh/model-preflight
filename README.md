@@ -36,7 +36,7 @@ npx skills add <your-github-name>/model-preflight --skill model-router --agent <
 
 ## 使用
 
-在任意 agent 会话里直接说任务，按三行格式描述最准：
+**显式触发，绝不自动执行**：用 `/preflight`（已配置命令的 agent）或直接说「preflight」/「航前检查」，再按三行格式描述任务最准：
 
 ```
 任务：<要做什么，一句话>
@@ -45,6 +45,8 @@ npx skills add <your-github-name>/model-preflight --skill model-router --agent <
 ```
 
 agent 会：补齐描述 → 跑判断 → 给出三行建议（如"建议 GLM-5.3 + 最高思考；完成后需要测试验证"）→ 停住等你切换模型 → 你回复"开始"后开工 → 完成后按判断决定是否测试。
+
+不触发就不跑判断——你直接说任务时 agent 正常干活，skill 只在你显式要求时工作。
 
 ## 配置
 
