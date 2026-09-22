@@ -91,6 +91,17 @@ agent 的 skills 目录约定位置即可。
 
 斜杠命令同样在新会话生效。
 
+## 航后检查：postflight
+
+说「postflight」/「航后检查」/「看看这次改动」触发：展示本次任务的改动内容供你验收——
+默认看未提交改动；diff 超过约 200 行时先给统计账单、再按需细看单个文件；非 git 目录退化为
+列出最近改动的文件。全程只用当前会话模型跑 git 命令叙述，**不调用任何额外模型**。
+另外，每次任务完成的收尾汇报会默认附一张 `git diff --stat` 小账单（文件级统计）。
+
+可选斜杠命令：把 `commands/postflight-zcode.md` / `postflight-claude.md` / `postflight-codex.md`
+分别拷到 `~/.zcode/commands/postflight.md`、`~/.claude/commands/postflight.md`、
+`~/.codex/prompts/postflight.md`，新会话生效。
+
 ## License
 
 MIT
